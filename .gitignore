@@ -1,0 +1,43 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+# *.a
+# *.lib
+
+# Executables
+# *.exe
+*.out
+*.app
+.metadata
+/Application/TouchGFX/build/Debug/
+/relate/
+/Application/si/
+/Application/.settings/
+/RemoteSystemsTempFiles/
+/Application/TouchGFX/build/
+/Application/TouchGFX/simulator/msvs/.vs
+/Application/Application Debug.launch
+/Application/Debug/
+.mxproject
