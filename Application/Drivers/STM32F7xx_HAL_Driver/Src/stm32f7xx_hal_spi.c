@@ -241,7 +241,6 @@ static HAL_StatusTypeDef SPI_WaitFlagStateUntilTimeout(SPI_HandleTypeDef *hspi, 
 static HAL_StatusTypeDef SPI_WaitFifoStateUntilTimeout(SPI_HandleTypeDef *hspi, uint32_t Fifo, uint32_t State,
                                                        uint32_t Timeout, uint32_t Tickstart);
 static void SPI_TxISR_8BIT(struct __SPI_HandleTypeDef *hspi);
-static void SPI_TxISR_9BIT(struct __SPI_HandleTypeDef *hspi);
 static void SPI_TxISR_16BIT(struct __SPI_HandleTypeDef *hspi);
 static void SPI_RxISR_8BIT(struct __SPI_HandleTypeDef *hspi);
 static void SPI_RxISR_16BIT(struct __SPI_HandleTypeDef *hspi);
@@ -1590,13 +1589,9 @@ HAL_StatusTypeDef HAL_SPI_Transmit_IT(SPI_HandleTypeDef *hspi, uint8_t *pData, u
   hspi->RxISR       = NULL;
 
   /* Set the function for IT treatment */
-  if (hspi->Init.DataSize > SPI_DATASIZE_9BIT)
+  if (hspi->Init.DataSize > SPI_DATASIZE_8BIT)
   {
     hspi->TxISR = SPI_TxISR_16BIT;
-  }
-  else if(hspi->Init.DataSize == SPI_DATASIZE_9BIT)
-  {
-	hspi->TxISR = SPI_TxISR_9BIT;
   }
   else
   {
@@ -3867,36 +3862,6 @@ static void SPI_TxISR_8BIT(struct __SPI_HandleTypeDef *hspi)
   hspi->pTxBuffPtr++;
   hspi->TxXferCount--;
 
-  if (hspi->TxXferCount == 0U)
-  {
-#if (USE_SPI_CRC != 0U)
-    if (hspi->Init.CRCCalculation == SPI_CRCCALCULATION_ENABLE)
-    {
-      /* Enable CRC Transmission */
-      SET_BIT(hspi->Instance->CR1, SPI_CR1_CRCNEXT);
-    }
-#endif /* USE_SPI_CRC */
-    SPI_CloseTx_ISR(hspi);
-  }
-}
-
-static void SPI_TxISR_9BIT(struct __SPI_HandleTypeDef *hspi)
-{
-  uint16_t value;
-  uint8_t * buf = hspi->pTxBuffPtr;
-  /* Transmit data in 9 Bit mode */
-  if ((uintptr_t)buf % 2  == 0)
-  {
-	  value = *(buf + 1 );
-  }
-  else
-  {
-	  value = *(buf - 1);
-	  hspi->TxXferCount--;
-  }
-  value |= 0x100;
-  hspi->Instance->DR = value;
-  hspi->pTxBuffPtr += 1;
   if (hspi->TxXferCount == 0U)
   {
 #if (USE_SPI_CRC != 0U)
