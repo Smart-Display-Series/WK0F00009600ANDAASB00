@@ -11,7 +11,9 @@ const uint16_t BITMAP_HEPA_2_ID = 1;
 const uint16_t BITMAP_HEPA_3_ID = 2;
 const uint16_t BITMAP_HEPA_4_ID = 3;
 const uint16_t BITMAP_HEPA_5_ID = 4;
-const uint16_t BITMAP_U_ID = 5;
+const uint16_t BITMAP_PARROT_00_ID = 5;
+const uint16_t BITMAP_PARROT_01_ID = 6;
+const uint16_t BITMAP_U_ID = 7;
 
 namespace BitmapDatabase
 {

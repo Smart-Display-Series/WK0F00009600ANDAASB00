@@ -32,7 +32,7 @@ static NoDMA dma;
 static LCD16bpp display;
 static ApplicationFontProvider fontProvider;
 static Texts texts;
-static TouchGFXHAL hal(dma, display, tc, 160, 128);
+static TouchGFXHAL hal(dma, display, tc, 160, 80);
 
 void touchgfx_init()
 {

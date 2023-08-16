@@ -14,7 +14,9 @@ public:
     {
         model = m;
     }
-    virtual void ButtonNotifyEvent ( ButtonState_t ButtonStatus ) {}
+
+    virtual void Rs485NotifyEvent ( Event_t msg ) {}
+
 protected:
     Model* model;
 };

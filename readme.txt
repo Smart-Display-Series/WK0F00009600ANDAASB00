@@ -2,6 +2,7 @@
   * STM32CubeIDE v1.8.0
   * STM32CubeMX v6.3.0
   * TouchGFX v4.16.1
+  * Source Insight v4.0
   
 WF0096ATYAA3DNN0
 

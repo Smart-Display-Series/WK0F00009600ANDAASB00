@@ -53,6 +53,8 @@ typedef struct{
 
 /* USER CODE END EM */
 
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -93,6 +95,8 @@ void Error_Handler(void);
 #define SPI3_NSS5_GPIO_Port GPIOA
 #define PWMA_Pin GPIO_PIN_9
 #define PWMA_GPIO_Port GPIOA
+#define RESETb_Pin GPIO_PIN_12
+#define RESETb_GPIO_Port GPIOA
 #define SPI3_NSS1_Pin GPIO_PIN_15
 #define SPI3_NSS1_GPIO_Port GPIOA
 #define DCX2_Pin GPIO_PIN_4
@@ -100,12 +104,6 @@ void Error_Handler(void);
 #define DCX3_Pin GPIO_PIN_9
 #define DCX3_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-
-#define PWMA_Pin GPIO_PIN_9
-#define PWMA_GPIO_Port GPIOA
-
-#define DCX_Pin       GPIO_PIN_10
-#define DCX_GPIO_Port GPIOB
 
 /* USER CODE END Private defines */
 

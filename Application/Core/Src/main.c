@@ -24,7 +24,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <../Drivers/Panel/ST7735S.h>
+#include "BSP/Panel/ST7735S.h"
 #include "ExHardware.h"
 
 /* USER CODE END Includes */
@@ -328,7 +328,7 @@ static void MX_QUADSPI_Init(void)
   /* USER CODE END QUADSPI_Init 1 */
   /* QUADSPI parameter configuration*/
   hqspi.Instance = QUADSPI;
-  hqspi.Init.ClockPrescaler = 255;
+  hqspi.Init.ClockPrescaler = 100;
   hqspi.Init.FifoThreshold = 1;
   hqspi.Init.SampleShifting = QSPI_SAMPLE_SHIFTING_NONE;
   hqspi.Init.FlashSize = 1;
@@ -480,6 +480,8 @@ static void MX_TIM1_Init(void)
 
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
+  TIM_OC_InitTypeDef sConfigOC = {0};
+  TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig = {0};
 
   /* USER CODE BEGIN TIM1_Init 1 */
 
@@ -500,6 +502,10 @@ static void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
+  if (HAL_TIM_PWM_Init(&htim1) != HAL_OK)
+  {
+    Error_Handler();
+  }
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterOutputTrigger2 = TIM_TRGO2_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
@@ -507,9 +513,36 @@ static void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
+  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
+  sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+  if (HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
+  sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
+  sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
+  sBreakDeadTimeConfig.DeadTime = 0;
+  sBreakDeadTimeConfig.BreakState = TIM_BREAK_DISABLE;
+  sBreakDeadTimeConfig.BreakPolarity = TIM_BREAKPOLARITY_HIGH;
+  sBreakDeadTimeConfig.BreakFilter = 0;
+  sBreakDeadTimeConfig.Break2State = TIM_BREAK2_DISABLE;
+  sBreakDeadTimeConfig.Break2Polarity = TIM_BREAK2POLARITY_HIGH;
+  sBreakDeadTimeConfig.Break2Filter = 0;
+  sBreakDeadTimeConfig.AutomaticOutput = TIM_AUTOMATICOUTPUT_DISABLE;
+  if (HAL_TIMEx_ConfigBreakDeadTime(&htim1, &sBreakDeadTimeConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
   /* USER CODE BEGIN TIM1_Init 2 */
 
   /* USER CODE END TIM1_Init 2 */
+  HAL_TIM_MspPostInit(&htim1);
 
 }
 
@@ -649,7 +682,7 @@ static void MX_GPIO_Init(void)
                           |SPI3_NSS5_Pin|SPI3_NSS1_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(DCX1_GPIO_Port, DCX1_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, DCX1_Pin|RESETb_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, SPI2_NSS5_Pin|SPI3_NSS2_Pin|SPI3_NSS3_Pin|SPI2_NSS1_Pin
@@ -666,9 +699,9 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : SPI1_NSS5_Pin DCX1_Pin SPI2_NSS2_Pin SPI2_NSS3_Pin
-                           SPI1_NSS1_Pin SPI3_NSS5_Pin SPI3_NSS1_Pin */
+                           SPI1_NSS1_Pin SPI3_NSS5_Pin RESETb_Pin SPI3_NSS1_Pin */
   GPIO_InitStruct.Pin = SPI1_NSS5_Pin|DCX1_Pin|SPI2_NSS2_Pin|SPI2_NSS3_Pin
-                          |SPI1_NSS1_Pin|SPI3_NSS5_Pin|SPI3_NSS1_Pin;
+                          |SPI1_NSS1_Pin|SPI3_NSS5_Pin|RESETb_Pin|SPI3_NSS1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -695,8 +728,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PA10 PA11 PA12 */
-  GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11|GPIO_PIN_12;
+  /*Configure GPIO pins : PA10 PA11 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10|GPIO_PIN_11;
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -713,7 +746,7 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
 	if( hspi->Instance == SPI1 )
 	{
 		clearTransmitActive( );
-//		DisplayDriver_TransferCompleteCallback();
+    DisplayDriver_TransferCompleteCallback();
 	}
 }
 
@@ -729,13 +762,218 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
 void StartTouchgfxTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
-  ST7735S_init_0096( &hspi1,
-                     NULL, NULL,
-                     SPI1_NSS1_GPIO_Port, SPI1_NSS1_Pin,
-                     DCX1_GPIO_Port, DCX1_Pin );
+  Backlight_Control( BL_ON );
+  Set_Backlight_Duty( 100 );
 
-  // Backlight_Control( BL_ON );
-  // Set_Backlight_Duty( 100 );
+  st7735_drv[0].hspi = &hspi1;
+  
+  st7735_drv[0].NSS_GPIO_Port = SPI1_NSS1_GPIO_Port;
+  st7735_drv[0].NSS_GPIO_Pin  = SPI1_NSS1_Pin;
+
+  st7735_drv[0].DCX_GPIO_Port = DCX1_GPIO_Port;
+  st7735_drv[0].DCX_GPIO_Pin  = DCX1_Pin;
+
+  st7735_drv[0].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[0].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[0].Init( 0 );
+  // ------------------------------------------------
+
+  st7735_drv[1].hspi = &hspi1;
+  
+  st7735_drv[1].NSS_GPIO_Port = SPI1_NSS2_GPIO_Port;
+  st7735_drv[1].NSS_GPIO_Pin  = SPI1_NSS2_Pin;
+
+  st7735_drv[1].DCX_GPIO_Port = DCX1_GPIO_Port;
+  st7735_drv[1].DCX_GPIO_Pin  = DCX1_Pin;
+
+  st7735_drv[1].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[1].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[1].Init( 1 );
+  // ------------------------------------------------
+
+  st7735_drv[2].hspi = &hspi1;
+  
+  st7735_drv[2].NSS_GPIO_Port = SPI1_NSS3_GPIO_Port;
+  st7735_drv[2].NSS_GPIO_Pin  = SPI1_NSS3_Pin;
+
+  st7735_drv[2].DCX_GPIO_Port = DCX1_GPIO_Port;
+  st7735_drv[2].DCX_GPIO_Pin  = DCX1_Pin;
+
+  st7735_drv[2].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[2].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[2].Init( 2 );
+  // ------------------------------------------------
+
+  st7735_drv[3].hspi = &hspi1;
+  
+  st7735_drv[3].NSS_GPIO_Port = SPI1_NSS4_GPIO_Port;
+  st7735_drv[3].NSS_GPIO_Pin  = SPI1_NSS4_Pin;
+
+  st7735_drv[3].DCX_GPIO_Port = DCX1_GPIO_Port;
+  st7735_drv[3].DCX_GPIO_Pin  = DCX1_Pin;
+
+  st7735_drv[3].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[3].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[3].Init( 3 );
+  // ------------------------------------------------
+
+  st7735_drv[4].hspi = &hspi1;
+  
+  st7735_drv[4].NSS_GPIO_Port = SPI1_NSS5_GPIO_Port;
+  st7735_drv[4].NSS_GPIO_Pin  = SPI1_NSS5_Pin;
+
+  st7735_drv[4].DCX_GPIO_Port = DCX1_GPIO_Port;
+  st7735_drv[4].DCX_GPIO_Pin  = DCX1_Pin;
+
+  st7735_drv[4].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[4].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[4].Init( 4 );
+  // ------------------------------------------------
+
+  st7735_drv[5].hspi = &hspi2;
+
+  st7735_drv[5].NSS_GPIO_Port = SPI2_NSS1_GPIO_Port;
+  st7735_drv[5].NSS_GPIO_Pin  = SPI2_NSS1_Pin;
+
+  st7735_drv[5].DCX_GPIO_Port = DCX2_GPIO_Port;
+  st7735_drv[5].DCX_GPIO_Pin  = DCX2_Pin;
+
+  st7735_drv[5].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[5].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[5].Init( 5 );
+  // ------------------------------------------------
+
+  st7735_drv[6].hspi = &hspi2;
+
+  st7735_drv[6].NSS_GPIO_Port = SPI2_NSS2_GPIO_Port;
+  st7735_drv[6].NSS_GPIO_Pin  = SPI2_NSS2_Pin;
+
+  st7735_drv[6].DCX_GPIO_Port = DCX2_GPIO_Port;
+  st7735_drv[6].DCX_GPIO_Pin  = DCX2_Pin;
+
+  st7735_drv[6].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[6].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[6].Init( 6 );
+  // ------------------------------------------------
+
+  st7735_drv[7].hspi = &hspi2;
+
+  st7735_drv[7].NSS_GPIO_Port = SPI2_NSS3_GPIO_Port;
+  st7735_drv[7].NSS_GPIO_Pin  = SPI2_NSS3_Pin;
+
+  st7735_drv[7].DCX_GPIO_Port = DCX2_GPIO_Port;
+  st7735_drv[7].DCX_GPIO_Pin  = DCX2_Pin;
+
+  st7735_drv[7].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[7].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[7].Init( 7 );
+  // ------------------------------------------------
+
+  st7735_drv[8].hspi = &hspi2;
+
+  st7735_drv[8].NSS_GPIO_Port = SPI2_NSS4_GPIO_Port;
+  st7735_drv[8].NSS_GPIO_Pin  = SPI2_NSS4_Pin;
+
+  st7735_drv[8].DCX_GPIO_Port = DCX2_GPIO_Port;
+  st7735_drv[8].DCX_GPIO_Pin  = DCX2_Pin;
+
+  st7735_drv[8].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[8].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[8].Init( 8 );
+  // ------------------------------------------------
+
+  st7735_drv[9].hspi = &hspi2;
+
+  st7735_drv[9].NSS_GPIO_Port = SPI2_NSS5_GPIO_Port;
+  st7735_drv[9].NSS_GPIO_Pin  = SPI2_NSS5_Pin;
+
+  st7735_drv[9].DCX_GPIO_Port = DCX2_GPIO_Port;
+  st7735_drv[9].DCX_GPIO_Pin  = DCX2_Pin;
+
+  st7735_drv[9].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[9].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[9].Init( 9 );
+  // ------------------------------------------------
+
+  st7735_drv[10].hspi = &hspi3;
+
+  st7735_drv[10].NSS_GPIO_Port = SPI3_NSS1_GPIO_Port;
+  st7735_drv[10].NSS_GPIO_Pin  = SPI3_NSS1_Pin;
+
+  st7735_drv[10].DCX_GPIO_Port = DCX3_GPIO_Port;
+  st7735_drv[10].DCX_GPIO_Pin  = DCX3_Pin;
+
+  st7735_drv[10].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[10].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[10].Init( 10 );
+  // ------------------------------------------------
+
+  st7735_drv[11].hspi = &hspi3;
+
+  st7735_drv[11].NSS_GPIO_Port = SPI3_NSS2_GPIO_Port;
+  st7735_drv[11].NSS_GPIO_Pin  = SPI3_NSS2_Pin;
+
+  st7735_drv[11].DCX_GPIO_Port = DCX3_GPIO_Port;
+  st7735_drv[11].DCX_GPIO_Pin  = DCX3_Pin;
+
+  st7735_drv[11].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[11].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[11].Init( 11 );
+  // ------------------------------------------------
+
+  st7735_drv[12].hspi = &hspi3;
+
+  st7735_drv[12].NSS_GPIO_Port = SPI3_NSS3_GPIO_Port;
+  st7735_drv[12].NSS_GPIO_Pin  = SPI3_NSS3_Pin;
+
+  st7735_drv[12].DCX_GPIO_Port = DCX3_GPIO_Port;
+  st7735_drv[12].DCX_GPIO_Pin  = DCX3_Pin;
+
+  st7735_drv[12].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[12].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[12].Init( 12 );
+  // ------------------------------------------------
+
+  st7735_drv[13].hspi = &hspi3;
+
+  st7735_drv[13].NSS_GPIO_Port = SPI3_NSS4_GPIO_Port;
+  st7735_drv[13].NSS_GPIO_Pin  = SPI3_NSS4_Pin;
+
+  st7735_drv[13].DCX_GPIO_Port = DCX3_GPIO_Port;
+  st7735_drv[13].DCX_GPIO_Pin  = DCX3_Pin;
+
+  st7735_drv[13].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[13].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[13].Init( 13 );
+  // ------------------------------------------------
+
+  st7735_drv[14].hspi = &hspi3;
+
+  st7735_drv[14].NSS_GPIO_Port = SPI3_NSS5_GPIO_Port;
+  st7735_drv[14].NSS_GPIO_Pin  = SPI3_NSS5_Pin;
+
+  st7735_drv[14].DCX_GPIO_Port = DCX3_GPIO_Port;
+  st7735_drv[14].DCX_GPIO_Pin  = DCX3_Pin;
+
+  st7735_drv[14].RESET_GPIO_Port = RESETb_GPIO_Port;
+  st7735_drv[14].RESET_GPIO_Pin  = RESETb_Pin;
+
+  st7735_drv[14].Init( 14 );
+  // ------------------------------------------------
 
   MX_TouchGFX_Process( );
   /* Infinite loop */
@@ -760,11 +998,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM6) {
+
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
   if (htim->Instance == TIM7) {
+
 	  touchgfxSignalVSync( );
+
   }
   /* USER CODE END Callback 1 */
 }

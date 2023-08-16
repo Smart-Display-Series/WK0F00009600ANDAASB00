@@ -93,36 +93,16 @@ void TouchGFXHAL::setTFTFrameBuffer(uint16_t* address)
  */
 void TouchGFXHAL::flushFrameBuffer(const touchgfx::Rect& rect)
 {
-    // Calling parent implementation of flushFrameBuffer(const touchgfx::Rect& rect).
-    //
-    // To overwrite the generated implementation, omit call to parent function
-    // and implemented needed functionality here.
-    // Please note, HAL::flushFrameBuffer(const touchgfx::Rect& rect) must
-    // be called to notify the touchgfx framework that flush has been performed.
-//	  uint16_t height;
-//	  uint16_t* ptr;
-	  uint16_t* FrameBuf = TouchGFXHAL::getTFTFrameBuffer();
-	  // This can be accelerated using regular DMA hardware
-//	  for (height = 0; height < rect.height ; height++)
-//	  {
-//		  uint16_t offset = ((rect.y + height) * HAL::DISPLAY_WIDTH + rect.x)*2;
-//	      ptr = getClientFrameBuffer() + rect.x + (height + rect.y) * HAL::DISPLAY_WIDTH;
-//	      memcpy(((uint8_t*)FrameBuf_Copy) + offset,(uint8_t*)ptr , rect.width*2);
-//	  }
-	  touchgfxDisplayDriverTransmitBlock((uint8_t*)FrameBuf, rect.x, rect.y, rect.width, rect.height);
+  // Calling parent implementation of flushFrameBuffer(const touchgfx::Rect& rect).
+  //
+  // To overwrite the generated implementation, omit call to parent function
+  // and implemented needed functionality here.
+  // Please note, HAL::flushFrameBuffer(const touchgfx::Rect& rect) must
+  // be called to notify the touchgfx framework that flush has been performed.
 
-    TouchGFXGeneratedHAL::flushFrameBuffer(rect);
+  TouchGFXGeneratedHAL::flushFrameBuffer(rect);
 }
 
-extern "C"
-void touchgfxSignalVSync(void)
-{
-  /* VSync has occurred, increment TouchGFX engine vsync counter */
-  touchgfx::HAL::getInstance()->vSync();
-
-  /* VSync has occurred, signal TouchGFX engine */
-  touchgfx::OSWrappers::signalVSync();
-}
 
 bool TouchGFXHAL::blockCopy(void* RESTRICT dest, const void* RESTRICT src, uint32_t numBytes)
 {

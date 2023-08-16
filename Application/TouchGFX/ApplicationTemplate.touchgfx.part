@@ -11,7 +11,7 @@
     "AvailableResolutions" : [
       {
         "Width": 160,
-        "Height": 128
+        "Height": 80
       }
     ],
     "PostGenerateTargetCommand" : "touchgfx update_project --project-file=../Application.ioc --platform=m7",

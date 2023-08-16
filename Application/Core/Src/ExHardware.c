@@ -19,14 +19,14 @@ void Backlight_Control ( BACKLIGHT_CONTROL BL_Ctrl )
 		case BL_ON:
 			
 			Set_Backlight_Duty( backlight );
-			HAL_TIM_PWM_Start( &htim1, TIM_CHANNEL_1 );
+			HAL_TIM_PWM_Start( &htim1, TIM_CHANNEL_2 );
 			
 			break;
 		//==============================================
 		case BL_OFF:
 		default:
 			
-			HAL_TIM_PWM_Stop( &htim1, TIM_CHANNEL_1 );
+			HAL_TIM_PWM_Stop( &htim1, TIM_CHANNEL_2 );
 			Set_Backlight_Duty( 0 );
 			
 			break;
@@ -54,7 +54,7 @@ void Set_Backlight_Duty ( uint8_t d )
 	d = ( (true_pwm_Max - true_pwm_min) * (d - default_pwm_min) ) / ( default_pwm_Max - default_pwm_min ) + true_pwm_min;
 
 	set_duty:
-	__HAL_TIM_SET_COMPARE( &htim1, TIM_CHANNEL_1, d );
+	__HAL_TIM_SET_COMPARE( &htim1, TIM_CHANNEL_2, d );
 }
 
 uint8_t Get_Backlight_Duty ( void )

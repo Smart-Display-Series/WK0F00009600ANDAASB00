@@ -12,8 +12,36 @@
 #include <gui/common/FrontendApplication.hpp>
 #include <gui/model/Model.hpp>
 
-#include <gui/screen_screen/screenView.hpp>
-#include <gui/screen_screen/screenPresenter.hpp>
+#include <gui/screen99_screen/Screen99View.hpp>
+#include <gui/screen99_screen/Screen99Presenter.hpp>
+#include <gui/screen02_screen/Screen02View.hpp>
+#include <gui/screen02_screen/Screen02Presenter.hpp>
+#include <gui/screen03_screen/Screen03View.hpp>
+#include <gui/screen03_screen/Screen03Presenter.hpp>
+#include <gui/screen04_screen/Screen04View.hpp>
+#include <gui/screen04_screen/Screen04Presenter.hpp>
+#include <gui/screen05_screen/Screen05View.hpp>
+#include <gui/screen05_screen/Screen05Presenter.hpp>
+#include <gui/screen06_screen/Screen06View.hpp>
+#include <gui/screen06_screen/Screen06Presenter.hpp>
+#include <gui/screen07_screen/Screen07View.hpp>
+#include <gui/screen07_screen/Screen07Presenter.hpp>
+#include <gui/screen08_screen/Screen08View.hpp>
+#include <gui/screen08_screen/Screen08Presenter.hpp>
+#include <gui/screen09_screen/Screen09View.hpp>
+#include <gui/screen09_screen/Screen09Presenter.hpp>
+#include <gui/screen10_screen/Screen10View.hpp>
+#include <gui/screen10_screen/Screen10Presenter.hpp>
+#include <gui/screen11_screen/Screen11View.hpp>
+#include <gui/screen11_screen/Screen11Presenter.hpp>
+#include <gui/screen12_screen/Screen12View.hpp>
+#include <gui/screen12_screen/Screen12Presenter.hpp>
+#include <gui/screen13_screen/Screen13View.hpp>
+#include <gui/screen13_screen/Screen13Presenter.hpp>
+#include <gui/screen14_screen/Screen14View.hpp>
+#include <gui/screen14_screen/Screen14Presenter.hpp>
+#include <gui/screen15_screen/Screen15View.hpp>
+#include <gui/screen15_screen/Screen15Presenter.hpp>
 
 
 /**
@@ -36,8 +64,22 @@ public:
      * A list of all view types. Must end with meta::Nil.
      * @note All view types used in the application MUST be added to this list!
      */
-    typedef touchgfx::meta::TypeList< screenView,
-            touchgfx::meta::Nil
+    typedef touchgfx::meta::TypeList< Screen99View,
+            touchgfx::meta::TypeList< Screen02View,
+            touchgfx::meta::TypeList< Screen03View,
+            touchgfx::meta::TypeList< Screen04View,
+            touchgfx::meta::TypeList< Screen05View,
+            touchgfx::meta::TypeList< Screen06View,
+            touchgfx::meta::TypeList< Screen07View,
+            touchgfx::meta::TypeList< Screen08View,
+            touchgfx::meta::TypeList< Screen09View,
+            touchgfx::meta::TypeList< Screen10View,
+            touchgfx::meta::TypeList< Screen11View,
+            touchgfx::meta::TypeList< Screen12View,
+            touchgfx::meta::TypeList< Screen13View,
+            touchgfx::meta::TypeList< Screen14View,
+            touchgfx::meta::TypeList< Screen15View,
+            touchgfx::meta::Nil > > > > > > > > > > > > > >
             > GeneratedViewTypes;
 
     /**
@@ -49,8 +91,22 @@ public:
      * A list of all presenter types. Must end with meta::Nil.
      * @note All presenter types used in the application MUST be added to this list!
      */
-    typedef touchgfx::meta::TypeList< screenPresenter,
-            touchgfx::meta::Nil
+    typedef touchgfx::meta::TypeList< Screen99Presenter,
+            touchgfx::meta::TypeList< Screen02Presenter,
+            touchgfx::meta::TypeList< Screen03Presenter,
+            touchgfx::meta::TypeList< Screen04Presenter,
+            touchgfx::meta::TypeList< Screen05Presenter,
+            touchgfx::meta::TypeList< Screen06Presenter,
+            touchgfx::meta::TypeList< Screen07Presenter,
+            touchgfx::meta::TypeList< Screen08Presenter,
+            touchgfx::meta::TypeList< Screen09Presenter,
+            touchgfx::meta::TypeList< Screen10Presenter,
+            touchgfx::meta::TypeList< Screen11Presenter,
+            touchgfx::meta::TypeList< Screen12Presenter,
+            touchgfx::meta::TypeList< Screen13Presenter,
+            touchgfx::meta::TypeList< Screen14Presenter,
+            touchgfx::meta::TypeList< Screen15Presenter,
+            touchgfx::meta::Nil > > > > > > > > > > > > > >
             > GeneratedPresenterTypes;
 
     /**
@@ -73,7 +129,7 @@ public:
 
     virtual void gotoStartScreen(FrontendApplication& app)
     {
-        app.gotoscreenScreenNoTransition();
+        app.gotoScreen99ScreenNoTransition();
     }
 protected:
     FrontendHeapBase(touchgfx::AbstractPartition& presenters, touchgfx::AbstractPartition& views, touchgfx::AbstractPartition& transitions, FrontendApplication& app)
