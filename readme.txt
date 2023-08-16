@@ -9,3 +9,8 @@ WF0096ATYAA3DNN0
 80 × RGB × 160(TFT)
 
 https://www.winstar.com.tw/zh-tw/products/tft-lcd/ips-tft/mini-tft-lcd.html
+
+
+* The external loader driver (STM32F722_W25Q128.stldr) 
+  is located in the "Doc" folder. 
+  Please select it before using the "STM32CubeProgrammer" tool.
