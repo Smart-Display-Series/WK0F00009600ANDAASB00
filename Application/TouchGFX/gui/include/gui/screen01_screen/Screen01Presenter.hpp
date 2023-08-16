@@ -1,17 +1,17 @@
-#ifndef SCREEN99PRESENTER_HPP
-#define SCREEN99PRESENTER_HPP
+#ifndef SCREEN01PRESENTER_HPP
+#define SCREEN01PRESENTER_HPP
 
 #include <gui/model/ModelListener.hpp>
 #include <mvp/Presenter.hpp>
 
 using namespace touchgfx;
 
-class Screen99View;
+class Screen01View;
 
-class Screen99Presenter : public touchgfx::Presenter, public ModelListener
+class Screen01Presenter : public touchgfx::Presenter, public ModelListener
 {
 public:
-    Screen99Presenter(Screen99View& v);
+    Screen01Presenter(Screen01View& v);
 
     /**
      * The activate function is called automatically when this screen is "switched in"
@@ -25,16 +25,15 @@ public:
      */
     virtual void deactivate();
 
-    virtual ~Screen99Presenter() {};
+    virtual ~Screen01Presenter() {};
 
     virtual void Rs485NotifyEvent ( Event_t msg );
 
     virtual void EnablePanel( uint8_t device );
-
 private:
-    Screen99Presenter();
+    Screen01Presenter();
 
-    Screen99View& view;
+    Screen01View& view;
 };
 
-#endif // SCREEN99PRESENTER_HPP
+#endif // SCREEN01PRESENTER_HPP

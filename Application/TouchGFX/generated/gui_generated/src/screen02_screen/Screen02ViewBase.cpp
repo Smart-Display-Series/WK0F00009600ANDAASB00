@@ -50,8 +50,8 @@ void Screen02ViewBase::handleKeyEvent(uint8_t key)
     if(0 == key)
     {
         //Interaction1
-        //When hardware button 0 clicked change screen to Screen99
-        //Go to Screen99 with no screen transition
-        application().gotoScreen99ScreenNoTransition();
+        //When hardware button 0 clicked change screen to Screen01
+        //Go to Screen01 with no screen transition
+        application().gotoScreen01ScreenNoTransition();
     }
 }

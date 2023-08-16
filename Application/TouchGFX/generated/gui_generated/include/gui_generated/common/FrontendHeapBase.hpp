@@ -12,8 +12,8 @@
 #include <gui/common/FrontendApplication.hpp>
 #include <gui/model/Model.hpp>
 
-#include <gui/screen99_screen/Screen99View.hpp>
-#include <gui/screen99_screen/Screen99Presenter.hpp>
+#include <gui/screen01_screen/Screen01View.hpp>
+#include <gui/screen01_screen/Screen01Presenter.hpp>
 #include <gui/screen02_screen/Screen02View.hpp>
 #include <gui/screen02_screen/Screen02Presenter.hpp>
 #include <gui/screen03_screen/Screen03View.hpp>
@@ -64,7 +64,7 @@ public:
      * A list of all view types. Must end with meta::Nil.
      * @note All view types used in the application MUST be added to this list!
      */
-    typedef touchgfx::meta::TypeList< Screen99View,
+    typedef touchgfx::meta::TypeList< Screen01View,
             touchgfx::meta::TypeList< Screen02View,
             touchgfx::meta::TypeList< Screen03View,
             touchgfx::meta::TypeList< Screen04View,
@@ -91,7 +91,7 @@ public:
      * A list of all presenter types. Must end with meta::Nil.
      * @note All presenter types used in the application MUST be added to this list!
      */
-    typedef touchgfx::meta::TypeList< Screen99Presenter,
+    typedef touchgfx::meta::TypeList< Screen01Presenter,
             touchgfx::meta::TypeList< Screen02Presenter,
             touchgfx::meta::TypeList< Screen03Presenter,
             touchgfx::meta::TypeList< Screen04Presenter,
@@ -129,7 +129,7 @@ public:
 
     virtual void gotoStartScreen(FrontendApplication& app)
     {
-        app.gotoScreen99ScreenNoTransition();
+        app.gotoScreen01ScreenNoTransition();
     }
 protected:
     FrontendHeapBase(touchgfx::AbstractPartition& presenters, touchgfx::AbstractPartition& views, touchgfx::AbstractPartition& transitions, FrontendApplication& app)

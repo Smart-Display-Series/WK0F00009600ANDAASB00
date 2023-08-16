@@ -24,7 +24,7 @@ public:
       switch( screen ) {
 
         case 1:
-          gotoScreen99ScreenNoTransition();
+          gotoScreen01ScreenNoTransition();
           break;
 
         case 2:

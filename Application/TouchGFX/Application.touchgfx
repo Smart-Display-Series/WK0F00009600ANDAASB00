@@ -91,6 +91,35 @@
             "Clickable": false,
             "Fadeable": false,
             "Moveable": false
+          },
+          {
+            "Type": "TextArea",
+            "TextId": "SingleUseId52",
+            "TextRotation": "270",
+            "Color": {
+              "Red": 242,
+              "Green": 242,
+              "Blue": 235
+            },
+            "Alpha": 255,
+            "AutoSize": false,
+            "LineSpacing": 0,
+            "Wildcard1": {
+              "TextId": "SingleUseId53",
+              "UseBuffer": true,
+              "BufferSize": 3
+            },
+            "Name": "textArea3",
+            "X": 0,
+            "Y": 0,
+            "Width": 33,
+            "Height": 80,
+            "Visible": true,
+            "LockPosition": false,
+            "Draggable": false,
+            "Clickable": false,
+            "Fadeable": false,
+            "Moveable": false
           }
         ],
         "Interactions": [
@@ -277,7 +306,7 @@
             }
           }
         ],
-        "Name": "Screen99",
+        "Name": "Screen01",
         "OverrideDefaultBufferSize": false,
         "CanvasBufferSize": 0
       },
@@ -384,7 +413,7 @@
             "Action": {
               "Type": "ActionGotoScreen",
               "ScreenTransitionType": "ScreenTransitionNone",
-              "ActionComponent": "Screen99"
+              "ActionComponent": "Screen01"
             }
           }
         ],
@@ -1841,6 +1870,14 @@
       {
         "TextEntryId": "SingleUseId51",
         "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId52",
+        "IsResource": false
+      },
+      {
+        "TextEntryId": "SingleUseId53",
+        "IsResource": false
       }
     ],
     "Name": "Application",
@@ -1849,7 +1886,7 @@
       "Height": 80
     },
     "SelectedColorDepth": 16,
-    "StartupScreenName": "Screen99",
+    "StartupScreenName": "Screen01",
     "SelectedStartupLanguage": "GB",
     "Skin": "Blue",
     "TouchGfxPath": "../Middlewares/ST/touchgfx",

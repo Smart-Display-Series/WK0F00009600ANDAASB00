@@ -15,8 +15,8 @@ public:
     FrontendApplicationBase(Model& m, FrontendHeap& heap);
     virtual ~FrontendApplicationBase() { }
 
-    // Screen99
-    void gotoScreen99ScreenNoTransition();
+    // Screen01
+    void gotoScreen01ScreenNoTransition();
 
     // Screen02
     void gotoScreen02ScreenNoTransition();
@@ -65,8 +65,8 @@ protected:
     FrontendHeap& frontendHeap;
     Model& model;
 
-    // Screen99
-    void gotoScreen99ScreenNoTransitionImpl();
+    // Screen01
+    void gotoScreen01ScreenNoTransitionImpl();
 
     // Screen02
     void gotoScreen02ScreenNoTransitionImpl();

@@ -9,8 +9,8 @@
 #include <touchgfx/Texts.hpp>
 #include <touchgfx/hal/HAL.hpp>
 #include <platform/driver/lcd/LCD16bpp.hpp>
-#include <gui/screen99_screen/Screen99View.hpp>
-#include <gui/screen99_screen/Screen99Presenter.hpp>
+#include <gui/screen01_screen/Screen01View.hpp>
+#include <gui/screen01_screen/Screen01Presenter.hpp>
 #include <gui/screen02_screen/Screen02View.hpp>
 #include <gui/screen02_screen/Screen02Presenter.hpp>
 #include <gui/screen03_screen/Screen03View.hpp>
@@ -57,17 +57,17 @@ FrontendApplicationBase::FrontendApplicationBase(Model& m, FrontendHeap& heap)
  * Screen Transition Declarations
  */
 
-// Screen99
+// Screen01
 
-void FrontendApplicationBase::gotoScreen99ScreenNoTransition()
+void FrontendApplicationBase::gotoScreen01ScreenNoTransition()
 {
-    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoScreen99ScreenNoTransitionImpl);
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplication::gotoScreen01ScreenNoTransitionImpl);
     pendingScreenTransitionCallback = &transitionCallback;
 }
 
-void FrontendApplicationBase::gotoScreen99ScreenNoTransitionImpl()
+void FrontendApplicationBase::gotoScreen01ScreenNoTransitionImpl()
 {
-    touchgfx::makeTransition<Screen99View, Screen99Presenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+    touchgfx::makeTransition<Screen01View, Screen01Presenter, touchgfx::NoTransition, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }
 
 // Screen02
